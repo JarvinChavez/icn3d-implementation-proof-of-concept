@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .box {
+            width: 750px;
+            height: 500px;
+            background-color: crimson; 
+            border: 2px solid black;
+        }
+
+        iframe {
+            width: 152%;
+            height: 154%;
+            position: relative;
+            transform: scale(0.65) translate(-300px, -205px);  
+        }
+    </style>
+    <script src="presetIframe.js"></script>
+</head>
+<body>
+    <input type="text" id="proteinID" placeholder="Please enter a protein ID">
+    <button onclick="sendModelToIframe()">Load Model</button>
+
+    <div class="box">
+        <iframe id="iCn3D" src="iframe.html" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        const iframe = document.getElementById("iCn3D");
+
+        function sendModelToIframe() {
+            const modelId = document.getElementById("proteinID").value;
+            if (modelId) {
+                iframe.contentWindow.postMessage(modelId, '*');
+            } else {
+                alert("Please enter a protein ID.");
+            }
+        }
+    </script>
+
+</body>
+</html>

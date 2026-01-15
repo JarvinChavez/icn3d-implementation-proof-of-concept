@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta name="description" content="iCn3D Structure Viewer">
+  <meta name="keywords" content="NCBI, Structure, JavaScript, iCn3D, 3D, Viewer, WebGL, three.js, sequence, chemical">
+  <meta name="robots" content="index,follow,noarchive">
+  <meta name="ncbi_app" content="structure">
+  <meta name="ncbi_pdid" content="icn3d">
+  <meta name="" content="example">
+  <meta name="ncbi_pinger_xml_http_request_override" content="false"/>
+  <meta name="ncbi_pinger_click_ping_selector" content="button, a, input[type=submit], span[data-pinger], div[data-pinger], label[data-pinger]"/>
+  <title>iCn3D: Web-based 3D Structure Viewer</title>
+  <script type="text/javascript">
+    window.ncbi_startTime = new Date();
+  </script>
+</head>
+  <style>
+    /* Hide feedback box */
+    .icn3d-feedback { /* Adjust the selector based on the actual class */
+        display: none !important;
+    }
+  </style>
+<body>
+
+  <div id="icn3dwrap"></div>
+  <link rel="stylesheet" href="https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery-ui.min.css">
+  <link rel="stylesheet" href="https://www.ncbi.nlm.nih.gov/Structure/icn3d/icn3d.css">
+  <script src="https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery.min.js"></script>
+  <script src="https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery-ui.min.js"></script>
+  <script src="https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/threeClass.min.js"></script>
+  <script src="https://www.ncbi.nlm.nih.gov/Structure/icn3d/icn3d.min.js"></script>
+
+  <script>
+    let result = null;
+    window.addEventListener('message', function(event) {
+      result = event.data;
+      if (result) {
+        initIcn3D(result);
+      }
+    });
+    function initIcn3D(modelId) {
+      $(document).ready(async function() {
+        var cfg = {
+          divid: 'icn3dwrap',
+          width: '100%',
+          height: '100%',
+          resize: false,
+          mobilemenu: false,
+          showcommand: false,
+          showtitle: false,
+          showmenu: false,
+          closepopup: false,
+          showanno: false,
+          menuicon: false,
+          command: "color 808080"  
+        };
+        cfg['mmdbafid'] = modelId;
+
+        var icn3dui = new icn3d.iCn3DUI(cfg);
+        await icn3dui.show3DStructure();
+      });
+    }
+  </script>
+
+  <!-- log & Google Analytics -->
+  <script type="text/javascript" src="https://www.ncbi.nlm.nih.gov/core/pinger/pinger.js"></script>
+
+</body>
+</html>
