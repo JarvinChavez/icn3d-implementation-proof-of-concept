@@ -1,7 +1,34 @@
-Overview
+# iCn3D — MCD Miner Integration
 
-This repository contains an early proof-of-concept implementation for integrating iCn3D into the MCD Miner pipeline.
+Proof-of-concept integrating **iCn3D** 3D molecular visualization into the **MCD Miner** bioinformatics research pipeline.
 
-This project was used as a local test and development environment to prototype and validate the integration before the feature was later refactored and adapted for the web-based iCn3D deployment.
+Built during NSF-funded undergraduate research at the University of St. Thomas.
 
-The code here represents an early experimental version of the integration and is not intended to be a standalone production tool.
+---
+
+## Overview
+
+This project connects protein data workflows with interactive 3D molecular visualization — allowing researchers to explore structures in the browser instead of juggling disconnected tools.
+
+**Related resume work:** UniProt API ingestion, async Python pipelines, and bioinformatics research presented at ABRCMS 2023.
+
+---
+
+## Tech stack
+
+- JavaScript
+- iCn3D (3D molecular visualization)
+- MCD Miner research pipeline integration
+
+---
+
+## Status
+
+Early proof-of-concept / research prototype. Active development continued in private research environments.
+
+---
+
+## Author
+
+**Jarvin Chavez**  
+[GitHub](https://github.com/JarvinChavez) · [LinkedIn](https://www.linkedin.com/in/jarvin-chavez-b9ba9a266/)
