@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta name="description" content="iCn3D Structure Viewer">
+  <meta name="keywords" content="NCBI, Structure, JavaScript, iCn3D, 3D, Viewer, WebGL, three.js, sequence, chemical">
+  <meta name="robots" content="index,follow,noarchive">
+  <meta name="ncbi_app" content="structure">
+  <meta name="ncbi_pdid" content="icn3d">
+  <meta name="" content="example">
+  <meta name="ncbi_pinger_xml_http_request_override" content="false"/>
+  <meta name="ncbi_pinger_click_ping_selector" content="button, a, input[type=submit], span[data-pinger], div[data-pinger], label[data-pinger]"/>
+  <title>iCn3D: Web-based 3D Structure Viewer</title>
+  <script type="text/javascript">
+      window.ncbi_startTime = new Date();
+  </script>
+  </head>
+  <body>
+    <p id='command'></p>
+    <script>
+        /*brings command and splits it.
+          the current variable value is a test string, the actual result is in note form.
+          this brings "command" which is sent from the front end to the back end then used by the front end.
+        */ 
+        var command = localStorage.getItem('command');
+        const [uniprotID, displayCommand] = command.split(',');
+    </script>
+  
+    <div id="icn3dwrap"></div>
+    <link rel="stylesheet" href=https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery-ui.min.css>
+    <link rel="stylesheet" href=https://www.ncbi.nlm.nih.gov/Structure/icn3d/icn3d.css>
+    <script src=https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery.min.js></script>
+    <script src=https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/jquery-ui.min.js></script>
+    <script src=https://www.ncbi.nlm.nih.gov/Structure/icn3d/lib/threeClass.min.js></script>
+   <script src=https://www.ncbi.nlm.nih.gov/Structure/icn3d/icn3d.min.js></script>
+  
+   <p id="resultParagraph"></p>
+    <script type="text/javascript">
+      $( document ).ready(async function() {
+        
+     var cfg = {
+      divid: 'icn3dwrap',
+                width: '99%',
+                height: '98%',
+                resize: false,
+                mobilemenu: false,
+                showcommand: false,
+                showtitle: true,
+                showmenu: false,
+                closepopup: false,
+                showanno: true,
+                menuicon: false,
+                showselection: false,
+                command: displayCommand, 
+                
+            };
+            // Do not change 'mmdbafid' this is the alphafold id, then the protein ID is assigned to it.
+            cfg['mmdbafid'] = uniprotID;
+           
+            var icn3dui = new icn3d.iCn3DUI(cfg);
+  
+            //communicate with the 3D viewer with chained functions
+            await icn3dui.show3DStructure();
+           
+            
+      });
+      
+    </script>
+  
+    <!-- log & Google Analytics -->
+  
+    <script type="text/javascript" src=https://www.ncbi.nlm.nih.gov/core/pinger/pinger.js></script>
+  
+  </body></html>
+  

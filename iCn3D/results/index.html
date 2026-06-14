@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <style>
         .box {
@@ -10,34 +10,111 @@
         }
 
         iframe {
-            width: 152%;
+            width: 153%;
             height: 154%;
             position: relative;
             transform: scale(0.65) translate(-300px, -205px);  
         }
+
+        /* Style to align the button and input field */
+        #submitButton {
+            margin-left: 5px;
+            vertical-align: top;
+        }
+
+        /* Style to adjust the input field width */
+        #input {
+            width: 300px; /* Adjust the width as needed */
+        }
     </style>
-    <script src="presetIframe.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-    <input type="text" id="proteinID" placeholder="Please enter a protein ID">
-    <button onclick="sendModelToIframe()">Load Model</button>
-
-    <div class="box">
-        <iframe id="iCn3D" src="iframe.html" frameborder="0"></iframe>
+    <div>
+        <input type="text" id="input" placeholder="Type an ID from 0 to 999 and press Submit" />
+        <button type="button" id="submitButton">Submit</button>
     </div>
+    <div id="boxContainer"></div>
 
     <script>
-        const iframe = document.getElementById("iCn3D");
+        const boxContainer = document.getElementById('boxContainer');
+        const input = document.getElementById('input');
+        const submitButton = document.getElementById('submitButton');
 
-        function sendModelToIframe() {
-            const modelId = document.getElementById("proteinID").value;
-            if (modelId) {
-                iframe.contentWindow.postMessage(modelId, '*');
-            } else {
-                alert("Please enter a protein ID.");
+        const baseURL = 'http://localhost:5501/';
+        const predefinedValue = "77"; // Predefined value for starting preview structure
+
+        // Function to handle form submission
+        const handleSubmit = async (value) => {
+            const inputValue = value || input.value;
+            if (inputValue.trim() === '') return;
+
+            // Check if the input value is within the range of 0 to 999
+            const parsedValue = parseInt(inputValue, 10);
+            if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 999) {
+                alert('Invalid value: Please enter a number between 0 and 999.');
+                return;
             }
-        }
-    </script>
 
+            try {
+                // Send the POST request
+                const postRes = await fetch(baseURL, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({
+                        parcel: inputValue
+                    })
+                });
+
+                if (!postRes.ok) {
+                    console.error('POST request failed');
+                    return;
+                }
+
+                const postData = await postRes.json();
+                const postCommand = postData.info;
+                localStorage.setItem('command', postCommand);
+
+                // After POST request is complete, send the GET request
+                const res = await fetch(baseURL + 'info', {
+                    method: 'GET'
+                });
+
+                if (!res.ok) {
+                    console.error('GET request failed');
+                    return;
+                }
+
+                const data = await res.json();
+                const command = data.info;
+                localStorage.setItem('command', command);
+
+                // Toggle visibility and set iframe src if necessary
+                boxContainer.innerHTML = '<div class="box"><iframe id="iCn3D" src="iCn3D.html" frameborder="0"></iframe></div>';
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        // Event listener for submit button click
+        submitButton.addEventListener('click', () => handleSubmit());
+
+        // Event listener for Enter key press
+        input.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSubmit();
+            }
+        });
+
+        // Trigger handleSubmit once the page loads with a predefined value
+        window.addEventListener('load', () => {
+            handleSubmit(predefinedValue);
+        });
+    </script>
 </body>
 </html>
