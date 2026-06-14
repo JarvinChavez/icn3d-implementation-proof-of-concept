@@ -7,13 +7,16 @@ const express = require('express')
 Preset the server, here you can customize the port and the inputs. 
 */
 const app = express();
-const port = 5505;
+const port = 5501;
 let input = 0;
-let command = 'O14513, set pk off; color #808080; select .A:977-9771; color #26619C; select .A:1069-10691; color #26619C; select .A:977-977100';
+let command = 'color #ff0000; set pk off; select .A:138-144; color #26619C; select :SQ,TQ | name :SQ,TQ';
 
 app.use(express.static('results'));
 app.use(express.json())
 
+app.get('/info', (req, res) => {
+    res.status(200).json({info: command})
+})
 app.post('/', (req, res) => {
     const {parcel } = req.body
     if (!parcel){return res.status(400).send({status: 'Failed to connect'})}
@@ -68,7 +71,6 @@ function toiCn3D(input, repeats, Window, motif, organism, uniprotID, proteinName
         return [readMotif];
       }
     }
-    
     // formula for distribution of window
     var i = parseInt(begcoord, 10);
     var n = parseInt(endcoord, 10);
